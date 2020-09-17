@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bluehost product creation</title>
+</head>
+<body>
+<div id="new_product" style="border-style: solid; width: 30%; padding-bottom:30px; padding-left:10px">
+    <h2>Add new product</h2>
+  <form method="POST" action="/">
+      <div class="form-field">{{ form.customer_id.label }} {{ form.customer_id }}
+      {% if form.customer_id.errors %}
+        <ul class="errors">
+        	{% for error in form.customer_id.errors %}
+        		<li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}</div>
+
+      <div class="form-field">{{ form.product_type.label }} {{ form.product_type }}
+          {% if form.product_type.errors %}
+        <ul class="errors">
+        	{% for error in form.product_type.errors %}
+        		<li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+      </div>
+      <div class="form-field">{{ form.domain.label }} {{ form.domain }}
+          {% if form.domain.errors %}
+        <ul class="errors">
+        	{% for error in form.domain.errors %}
+        		<li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+      </div>
+      <div class="form-field">{{ form.duration.label }} {{ form.duration }}
+          {% if form.duration.errors %}
+        <ul class="errors">
+        	{% for error in form.duration.errors %}
+        		<li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+      </div>
+      {{ form.submit }}
+  </form>
+</div>
+<div id="upload_from_file" style="border-style: solid; width: 30%;  padding-bottom:30px; padding-left:10px">
+    <h2>Upload products from file</h2>
+  <form action = "http://localhost:5000/uploader" method = "POST"
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+  </form>
+</div>
+<div>
+  <button id="list_products" onclick="getProducts()">List Products</button>
+  <button id="email_schedule">Email Schedule</button>
+</div>
+<div>
+    <pre id="display" style="width: 50%; height:10pc; overflow-x: auto; word-wrap: break-word;">
+    </pre>
+</div>
+</body>
+</html>
+
+<script>
+    let output = document.getElementById('display')
+    function getProducts() {
+        fetch('{{ url_for('list_products') }}')
+            .then(data=> data.text())
+            .then(response=> {output.textContent=response;})
+    }
+
+    function getEmails() {
+        fetch('{{ url_for('list_email') }}')
+            .then(data=> data.text())
+            .then(response=> {output.textContent=response;})
+    }
+</script>
